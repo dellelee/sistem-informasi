@@ -100,8 +100,8 @@
 <div class="container" id="rujukan" style="display:none;">
     <h2>Rujukan Pasien</h2>
     <div class="row"><div class="label">Pilih Poli</div><div class="input"><select><option>Poli Umum</option><option>Poli Gigi</option></select></div></div>
-    <div class="row"><div class="label">Upload Surat Rujukan</div><div class="input"><input type="file"></div></div>
-    <div class="row"><div class="label">Upload Foto</div><div class="input"><div class="preview-box">Contoh.jpg</div></div></div>
+    <div class="row"><div class="label">Upload Surat Rujukan</div><div class="input"><input type="file" onchange="previewSuratRujukan(event)"></div></div></div>
+    <div class="row"><div class="label">Upload Foto</div><div class="input"><div class="preview-box" id="previewSurat">(Belum ada file)</div></div></div></div>
 
     <div class="btn-row">
         <button onclick="gotoPage('hasil')">Selesai</button>
@@ -122,9 +122,41 @@
 </div>
 
 <script>
+function previewSuratRujukan(event){
+ const file = event.target.files[0];
+ if(file){ document.getElementById('previewSurat').innerText = file.name; }
+}
+
+let data = {};
+
 function gotoPage(id){
     document.querySelectorAll('.container').forEach(c=>c.style.display='none');
     document.getElementById(id).style.display='block';
+}
+
+// Simpan data input pasien
+function simpanInputPasien(){
+    data.nama = document.getElementById('nama').value;
+    data.alamat = document.getElementById('alamat').value;
+    data.status = document.getElementById('status').value;
+    data.agama = document.getElementById('agama').value;
+    gotoPage('pembayaran');
+}
+
+// Simpan data pembayaran
+function simpanPembayaran(){
+    data.metode = document.getElementById('metode').value;
+    data.bpjs = document.getElementById('bpjs').value;
+    data.nik = document.getElementById('nik').value;
+    gotoPage('rujukan');
+}
+
+// Tampilkan hasil akhir
+function tampilkanHasil(){
+    document.getElementById('hasilNama').innerText = data.nama;
+    document.getElementById('hasilNIK').innerText = data.nik;
+    document.getElementById('hasilBPJS').innerText = data.bpjs;
+    gotoPage('hasil');
 }
 </script>
 
