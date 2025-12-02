@@ -45,17 +45,24 @@
 <body>
 
 <!-- DASHBOARD -->
-<div class="container" id="dashboard">
+<div class="container" id="dashboard" style="display:none;">
     <h2>Dashboard</h2>
     <div class="dashboard-menu">
-        <div class="menu-box" onclick="gotoPage('login')">Mulai Pendaftaran</div>
+        <div class="menu-box" onclick="gotoPage('inputPasien')">Mulai Pendaftaran</div>
+        <div class="menu-box" onclick="gotoPage('dataPasien')">Data Pasien</div>
+        <div class="menu-box">Riwayat</div>
+    </div>
+        <div class="menu-box">Data Pasien</div>
+        <div class="menu-box">Riwayat</div>
+    </div>
+</div>
         <div class="menu-box">Data Pasien</div>
         <div class="menu-box">Riwayat</div>
     </div>
 </div>
 
 <!-- LOGIN -->
-<div class="container" id="login" style="display:none;">
+<div class="container" id="login""display:none;">
     <h2>Login</h2>
     <div class="row">
         <div class="label">Username</div>
@@ -118,45 +125,84 @@
 
     <h3 style="text-align:center;">Nomor Antrian</h3>
     <div class="nomor-antrian">15</div>
+    <div class="btn-row">
+        <button onclick="window.print()">Print</button>
+        <button onclick="gotoPage('dashboard')">Kembali ke Dashboard</button>
+    </div>
 
 </div>
 
 <script>
-function previewSuratRujukan(event){
- const file = event.target.files[0];
- if(file){ document.getElementById('previewSurat').innerText = file.name; }
-}
-
 let data = {};
+let nomorAntrian = parseInt(localStorage.getItem('nomorAntrian')) || 1;
+let semuaPasien = JSON.parse(localStorage.getItem('semuaPasien') || '[]');
 
-function gotoPage(id){
-    document.querySelectorAll('.container').forEach(c=>c.style.display='none');
-    document.getElementById(id).style.display='block';
-}
+function gotoPage(id){ document.querySelectorAll('.container').forEach(c=>c.style.display='none'); document.getElementById(id).style.display='block'; }
 
-// Simpan data input pasien
-function simpanInputPasien(){
-    data.nama = document.getElementById('nama').value;
-    data.alamat = document.getElementById('alamat').value;
-    data.status = document.getElementById('status').value;
-    data.agama = document.getElementById('agama').value;
-    gotoPage('pembayaran');
-}
+function simpanInputPasien(){ data.nama=document.getElementById('nama').value; data.alamat=document.getElementById('alamat').value; data.status=document.getElementById('status').value; data.agama=document.getElementById('agama').value; gotoPage('pembayaran'); }
 
-// Simpan data pembayaran
-function simpanPembayaran(){
-    data.metode = document.getElementById('metode').value;
-    data.bpjs = document.getElementById('bpjs').value;
-    data.nik = document.getElementById('nik').value;
-    gotoPage('rujukan');
-}
+function simpanPembayaran(){ data.metode=document.getElementById('metode').value; data.bpjs=document.getElementById('bpjs').value; data.nik=document.getElementById('nik').value; gotoPage('rujukan'); }
 
-// Tampilkan hasil akhir
+function previewSuratRujukan(e){ const f=e.target.files[0]; if(f){ document.getElementById('previewSurat').innerText=f.name; } }
+
 function tampilkanHasil(){
-    document.getElementById('hasilNama').innerText = data.nama;
-    document.getElementById('hasilNIK').innerText = data.nik;
-    document.getElementById('hasilBPJS').innerText = data.bpjs;
+    data.antrian = nomorAntrian;
+    document.getElementById('hasilNama').innerText=data.nama;
+    document.getElementById('hasilNIK').innerText=data.nik;
+    document.getElementById('hasilBPJS').innerText=data.bpjs;
+    document.querySelector('.nomor-antrian').innerText=data.antrian;
+
+    semuaPasien.push({...data});
+    localStorage.setItem('semuaPasien', JSON.stringify(semuaPasien));
+
+    nomorAntrian++;
+    localStorage.setItem('nomorAntrian', nomorAntrian);
+
+    tambahKeTabel();
     gotoPage('hasil');
+}
+
+function tambahKeTabel(){
+    const tbody=document.getElementById('tabelPasien'); tbody.innerHTML="";
+    semuaPasien.forEach(p=>{
+        const tr=document.createElement('tr'); tr.innerHTML=`<td>${p.nama}</td><td>${p.nik}</td><td>${p.bpjs}</td><td>${p.antrian}</td>`; tbody.appendChild(tr);
+    });
+}
+
+tambahKeTabel();
+</script>
+
+<!-- DATA PASIEN -->
+<div class="container" id="dataPasien" style="display:none;">
+    <h2>Data Pasien</h2>
+    <table border="1" width="100%" cellpadding="8" style="border-collapse:collapse; background:white;">
+        <thead>
+            <tr style="background:#2c66c3; color:white;">
+                <th>Nama</th>
+                <th>NIK</th>
+                <th>Nomor BPJS</th>
+                <th>Nomor Antrian</th>
+            </tr>
+        </thead>
+        <tbody id="tabelPasien">
+            <!-- Data otomatis masuk di sini -->
+        </tbody>
+    </table>
+    <div class="btn-row"><button onclick="gotoPage('dashboard')">Kembali</button></div>
+</div>
+
+<script>
+// Tambahkan data ke tabel setiap selesai pendaftaran
+function tambahKeTabel(){
+    const tbody = document.getElementById('tabelPasien');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td>${data.nama}</td>
+        <td>${data.nik}</td>
+        <td>${data.bpjs}</td>
+        <td>${data.antrian || 15}</td>
+    `;
+    tbody.appendChild(tr);
 }
 </script>
 
