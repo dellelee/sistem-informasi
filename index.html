@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Metode Prototype - Sistem Pendaftaran Pasien BPJS</title>
+  <style>
+    :root{--bg:#f6f8fb;--card:#ffffff;--accent:#0f62fe;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial; margin:0; background:var(--bg); color:#0f172a}
+    .container{max-width:980px;margin:36px auto;padding:24px}
+    header{display:flex;align-items:center;gap:16px}
+    .logo{width:64px;height:64px;background:linear-gradient(135deg,var(--accent),#7c3aed);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    h1{margin:0;font-size:20px}
+    p.lead{color:var(--muted);margin:8px 0 20px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:20px}
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(12,18,30,0.06)}
+    .section{margin-bottom:14px}
+    h2{font-size:16px;margin:0 0 10px}
+    ul{margin:0 0 12px 18px;color:var(--muted)}
+    .steps{counter-reset:step;display:grid;gap:10px}
+    .step{display:flex;gap:12px;align-items:flex-start}
+    .badge{width:32px;height:32px;border-radius:8px;background:#eef2ff;color:#2a2a86;display:flex;align-items:center;justify-content:center;font-weight:600}
+    pre{background:#0b1220;color:#e6f6ff;padding:12px;border-radius:8px;overflow:auto}
+    .mock-form input, .mock-form select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;margin-bottom:8px}
+    .btn{background:var(--accent);color:#fff;padding:10px 12px;border-radius:8px;border:0;cursor:pointer}
+    .flowchart{background:linear-gradient(180deg,#ffffff,#f8fafc);padding:14px;border-radius:8px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr} .logo{width:54px;height:54px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">BPJS</div>
+      <div>
+        <h1>Metode Prototype — Sistem Pendaftaran Pasien BPJS</h1>
+        <p class="lead">Contoh halaman dokumentasi + prototype interaktif ringan untuk sistem pendaftaran pasien BPJS di rumah sakit.</p>
+      </div>
+    </header>
+
+    <div class="grid" style="margin-top:18px;">
+      <main class="card">
+        <section class="section">
+          <h2>Apa itu Metode Prototype?</h2>
+          <p style="color:var(--muted);margin-top:6px;">Metode Prototype adalah pendekatan pengembangan di mana developer membuat model awal (prototype) dari sistem untuk divalidasi oleh pengguna. Prototype diubah berulang sampai memenuhi kebutuhan pengguna sebelum pembuatan sistem final.</p>
+        </section>
+
+        <section class="section">
+          <h2>Langkah implementasi (khusus pendaftaran BPJS)</h2>
+          <div class="steps">
+            <div class="step">
+              <div class="badge">1</div>
+              <div>
+                <strong>Analisis kebutuhan singkat</strong>
+                <div style="color:var(--muted);margin-top:4px">Wawancara petugas pendaftaran, verifikasi BPJS, dan manajemen untuk menentukan proses alur pendaftaran BPJS yang berlaku.</div>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="badge">2</div>
+              <div>
+                <strong>Buat prototype awal</strong>
+                <div style="color:var(--muted);margin-top:4px">Prototype menampilkan form input NIK / No BPJS, verifikasi kepesertaan, pilihan poli, dan tampilan antrian.</div>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="badge">3</div>
+              <div>
+                <strong>Uji coba bersama petugas</strong>
+                <div style="color:var(--muted);margin-top:4px">Petugas mencoba prototype untuk merekam masalah UX dan validasi data BPJS.</div>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="badge">4</div>
+              <div>
+                <strong>Iterasi & perbaikan</strong>
+                <div style="color:var(--muted);margin-top:4px">Perbaiki alur, tambahkan verifikasi otomatis, dan optimalkan tampilan antrian sampai stabil.</div>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="badge">5</div>
+              <div>
+                <strong>Implementasi akhir</strong>
+                <div style="color:var(--muted);margin-top:4px">Bangun sistem final berdasarkan prototype yang disetujui dan lakukan pelatihan pengguna.</div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Keuntungan metode Prototype</h2>
+          <ul>
+            <li>Mengurangi misunderstanding antara developer dan petugas.</li>
+            <li>Hasil akhir lebih sesuai kebutuhan lapangan.</li>
+            <li>Mempercepat feedback cycle.</li>
+            <li>Mudah menyesuaikan perubahan regulasi BPJS atau kebijakan rumah sakit.</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2>Contoh kode singkat: mock API check BPJS (pseudo)</h2>
+          <pre>// contoh pseudo-js: cek kepesertaan BPJS
+function cekBPJS(noBpjs){
+  // seharusnya memanggil API BPJS / database internal
+  return new Promise(resolve=>{
+    setTimeout(()=>{
+      resolve({ok:true,nama:'Budi Santoso',kelas:'Peserta PBI'})
+    },700)
+  })
+}
+</pre>
+        </section>
+
+        <section class="section">
+          <h2>Prototype interaktif (mock)</h2>
+          <div class="mock-form">
+            <label>No. BPJS / NIK</label>
+            <input id="bpjs" placeholder="Contoh: 1234567890123456">
+            <label>Poli</label>
+            <select id="poli">
+              <option>Poli Umum</option>
+              <option>Poli Anak</option>
+              <option>Poli Gigi</option>
+            </select>
+            <button class="btn" id="cekBtn">Cek & Daftarkan</button>
+            <div id="result" style="margin-top:10px;color:var(--muted)"></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Flowchart sederhana</h2>
+          <div class="flowchart">
+            <!-- Simple SVG flowchart -->
+            <svg viewBox="0 0 700 220" width="100%" height="220" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="#0f172a" />
+                </marker>
+              </defs>
+
+              <rect x="20" y="18" rx="8" ry="8" width="160" height="44" fill="#fff" stroke="#e6e9ef"/>
+              <text x="100" y="46" text-anchor="middle" font-size="13" fill="#0f172a">Mulai - Pasien Datang</text>
+
+              <rect x="220" y="18" rx="8" ry="8" width="160" height="44" fill="#fff" stroke="#e6e9ef"/>
+              <text x="300" y="46" text-anchor="middle" font-size="13" fill="#0f172a">Input NIK / No BPJS</text>
+
+              <rect x="420" y="18" rx="8" ry="8" width="210" height="44" fill="#fff" stroke="#e6e9ef"/>
+              <text x="525" y="46" text-anchor="middle" font-size="13" fill="#0f172a">Validasi ke server BPJS</text>
+
+              <line x1="180" y1="40" x2="220" y2="40" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)"/>
+              <line x1="380" y1="40" x2="420" y2="40" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+              <rect x="220" y="90" rx="8" ry="8" width="160" height="44" fill="#fff" stroke="#e6e9ef"/>
+              <text x="300" y="118" text-anchor="middle" font-size="13" fill="#0f172a">Terverifikasi?</text>
+
+              <line x1="525" y1="62" x2="300" y2="90" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+              <rect x="460" y="150" rx="8" ry="8" width="160" height="44" fill="#fff" stroke="#e6e9ef"/>
+              <text x="540" y="178" text-anchor="middle" font-size="13" fill="#0f172a">Tolak / Informasi</text>
+
+              <rect x="40" y="150" rx="8" ry="8" width="160" height="44" fill="#fff" stroke="#e6e9ef"/>
+              <text x="120" y="178" text-anchor="middle" font-size="13" fill="#0f172a">Daftar Antrian</text>
+
+              <line x1="300" y1="112" x2="120" y2="150" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)"/>
+              <line x1="300" y1="112" x2="540" y2="150" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)"/>
+            </svg>
+          </div>
+        </section>
+
+        <footer>
+          <div>Catatan: Ini adalah halaman dokumentasi + prototype mock. Untuk integrasi nyata ke layanan BPJS diperlukan endpoint resmi dan otorisasi yang sesuai.</div>
+        </footer>
+      </main>
+
+      <aside class="card">
+        <h2>Ringkasan cepat</h2>
+        <p style="color:var(--muted);">Metode Prototype membantu mengeksplorasi desain pendaftaran BPJS sebelum implementasi akhir. Cocok untuk sistem yang perlu validasi pengguna intensif.</p>
+
+        <h2 style="margin-top:12px">Sumber & langkah selanjutnya</h2>
+        <ul>
+          <li>Rancang prototype klikable (Figma / Adobe XD).</li>
+          <li>Uji pada 3-5 petugas pendaftaran.</li>
+          <li>Iterasi minimal 2-3 kali lalu migrasi ke sistem produksi.</li>
+        </ul>
+
+        <h2 style="margin-top:12px">Export</h2>
+        <p style="color:var(--muted)">Salin kode HTML untuk dicoba di lokal atau gunakan sebagai template dokumentasi.</p>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // Mock interaction
+    function cekBPJS(no){
+      return new Promise((res)=>{
+        // simulated results
+        const ok = String(no||'').trim().length >= 6;
+        setTimeout(()=>{
+          if(ok) res({ok:true,nama:'Budi Santoso',kelas:'Peserta PBI'});
+          else res({ok:false,message:'Nomor tidak ditemukan'});
+        },750)
+      })
+    }
+
+    document.getElementById('cekBtn').addEventListener('click', async ()=>{
+      const no = document.getElementById('bpjs').value;
+      const r = document.getElementById('result');
+      r.textContent = 'Memeriksa...';
+      const resp = await cekBPJS(no);
+      if(resp.ok){
+        r.innerHTML = `<strong>Terverifikasi:</strong> ${resp.nama} — ${resp.kelas}<br/><button class='btn' onclick='alert("Pasien terdaftar di antrian: #A012")'>Selesaikan Pendaftaran</button>`;
+      } else {
+        r.textContent = 'Gagal: ' + (resp.message||'Tidak terverifikasi');
+      }
+    })
+  </script>
+</body>
+</html>
